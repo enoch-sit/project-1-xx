@@ -196,8 +196,6 @@ If you want to deploy just one chatbot project instead of going through the full
 
 ### Recommended: Use Part 2 for Complete Guide
 
-**👉 For the most foolproof experience, skip to "Part 2: Progressive Chatbot Deployment" below.** 
-
 Part 2 provides step-by-step instructions for deploying each chatbot with proper process management, Docker containerization (for Python projects), and comprehensive testing.
 
 ### Quick Docker Deployment (Python Projects - chatbot_04/05):
@@ -206,7 +204,7 @@ If you specifically want to deploy a Python chatbot quickly:
 
 1. **Install Docker and Docker Compose**:
    ```bash
-   # Install Docker (foolproof method)
+   # Install Docker (method)
    curl -fsSL https://get.docker.com -o get-docker.sh
    sudo sh get-docker.sh
    sudo usermod -aG docker $USER
@@ -249,7 +247,7 @@ If you specifically want to deploy a Python chatbot quickly:
 
 ### Quick Node.js Deployment (chatbot_02/03):
 
-For Node.js projects, see the detailed NVM installation and PM2 setup in Part 2, which provides foolproof process management.
+For Node.js projects, see the detailed NVM installation and PM2 setup in Part 2, which provides process management.
 
 ## Troubleshooting
 
