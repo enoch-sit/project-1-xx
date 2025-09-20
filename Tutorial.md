@@ -544,7 +544,7 @@ Now let's set up PM2 for proper process management.
 
 Install PM2 for process management:
 ```bash
-sudo npm install -g pm2
+npm install -g pm2
 ```
 
 Now start the application with PM2:
