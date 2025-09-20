@@ -497,11 +497,11 @@ Create a new location block for chatbot 02:
 sudo nano /etc/nginx/sites-available/$(hostname)
 ```
 
-Add this location block inside the existing server block (after the default location):
+Add this location block inside the existing server block (replace the default location):
 
 ```nginx
-    # Chatbot 02 - Environment Variables Demo
-    location /chatbot02 {
+    # Chatbot 02 - Environment Variables Demo (replaces default site)
+    location / {
         proxy_pass http://127.0.0.1:3001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -532,7 +532,7 @@ npm start
 ### Step 7: Test Chatbot 02
 
 **Keep the npm start process running** and open a new browser window:
-`https://project-1-xx.eduhk.hk/chatbot02`
+`https://project-1-xx.eduhk.hk`
 
 You should see the chatbot interface. Test it by sending a message.
 
@@ -560,7 +560,24 @@ pm2 startup
 
 Follow the PM2 startup command it shows you (copy and run the `sudo` command).
 
-**Test again** to make sure it's still working: `https://project-1-xx.eduhk.hk/chatbot02`
+**Test again** to make sure it's still working: `https://project-1-xx.eduhk.hk`
+
+### 🛑 How to Stop Chatbot 02
+
+When you're ready to move to the next deployment or need to stop the service:
+
+```bash
+# Stop the specific chatbot process
+pm2 stop chatbot02
+
+# Or delete it completely (removes from PM2 list)
+pm2 delete chatbot02
+
+# Check PM2 status to verify it's stopped
+pm2 status
+```
+
+**When to stop:** Before deploying the next chatbot to avoid port conflicts and resource usage.
 
 ---
 
@@ -603,11 +620,11 @@ ss -tuln | grep ':3002'
 sudo nano /etc/nginx/sites-available/$(hostname)
 ```
 
-Add another location block:
+Replace the location block with:
 
 ```nginx
-    # Chatbot 03 - CORS Configuration Demo
-    location /chatbot03 {
+    # Chatbot 03 - CORS Configuration Demo (replaces current site)
+    location / {
         proxy_pass http://127.0.0.1:3002;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -638,7 +655,7 @@ npm start
 ### Step 5: Test Chatbot 03
 
 **Keep the npm start process running** and open a new browser window:
-Visit: `https://project-1-xx.eduhk.hk/chatbot03`
+Visit: `https://project-1-xx.eduhk.hk`
 
 **Key Difference**: This version has proper CORS configuration for production security.
 
@@ -656,7 +673,24 @@ pm2 start server.js --name "chatbot03"
 pm2 save
 ```
 
-**Test again** to make sure it's still working: `https://project-1-xx.eduhk.hk/chatbot03`
+**Test again** to make sure it's still working: `https://project-1-xx.eduhk.hk`
+
+### 🛑 How to Stop Chatbot 03
+
+When you're ready to move to the next deployment or need to stop the service:
+
+```bash
+# Stop the specific chatbot process
+pm2 stop chatbot03
+
+# Or delete it completely (removes from PM2 list)
+pm2 delete chatbot03
+
+# Check PM2 status to verify it's stopped
+pm2 status
+```
+
+**When to stop:** Before deploying the next chatbot to avoid port conflicts and resource usage.
 
 ---
 
@@ -691,11 +725,11 @@ APP_PORT=8000
 sudo nano /etc/nginx/sites-available/$(hostname)
 ```
 
-Add FastAPI location (note the different port since Docker will use 8000):
+Replace the location block with:
 
 ```nginx
-    # Chatbot 04 - Python FastAPI Demo
-    location /chatbot04 {
+    # Chatbot 04 - Python FastAPI Demo (replaces current site)
+    location / {
         proxy_pass http://127.0.0.1:8001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -760,7 +794,7 @@ docker compose logs -f
 
 ### Step 7: Test Chatbot 04
 
-Visit: `https://project-1-xx.eduhk.hk/chatbot04`
+Visit: `https://project-1-xx.eduhk.hk`
 
 **Key Features**:
 - Real-time streaming responses
@@ -768,6 +802,26 @@ Visit: `https://project-1-xx.eduhk.hk/chatbot04`
 - Modern Python async architecture
 - FastAPI automatic documentation at `/docs`
 - Containerized deployment
+
+### 🛑 How to Stop Chatbot 04
+
+When you're ready to move to the next deployment or need to stop the service:
+
+```bash
+# Navigate to the chatbot 04 directory
+cd ~/project-1-xx/chatbot_04_MVPPython
+
+# Stop and remove the Docker containers
+docker compose down
+
+# Verify containers are stopped
+docker compose ps
+
+# Optional: Remove Docker images to free space
+docker compose down --rmi all
+```
+
+**When to stop:** Before deploying the next chatbot to free up ports (8001) and system resources.
 
 ---
 
@@ -860,13 +914,13 @@ sudo chmod -R 755 /var/www/html/chatbot05
 sudo nano /etc/nginx/sites-available/$(hostname)
 ```
 
-Add comprehensive configuration:
+Replace the nginx configuration with:
 
 ```nginx
-    # Chatbot 05 - Full-Stack React TypeScript
-    location /chatbot05 {
-        alias /var/www/html/chatbot05;
-        try_files $uri $uri/ /chatbot05/index.html;
+    # Chatbot 05 - Full-Stack React TypeScript (replaces current site)
+    location / {
+        root /var/www/html/chatbot05;
+        try_files $uri $uri/ /index.html;
         index index.html;
     }
 
@@ -895,7 +949,7 @@ sudo systemctl reload nginx
 
 ### Step 7: Test Full-Stack Application
 
-Visit: `https://project-1-xx.eduhk.hk/chatbot05`
+Visit: `https://project-1-xx.eduhk.hk`
 
 **Key Features**:
 - Modern React TypeScript frontend
@@ -905,11 +959,36 @@ Visit: `https://project-1-xx.eduhk.hk/chatbot05`
 - Settings and customization options
 - Containerized backend deployment
 
+### 🛑 How to Stop Chatbot 05
+
+When you need to stop the full-stack application:
+
+```bash
+# Navigate to the chatbot 05 directory
+cd ~/project-1-xx/chatbot_05_MVPPythonTypescriptReact/chatbot_05_MVPPythonTypescriptReact\ -\ Copy
+
+# Stop and remove the Docker backend
+docker compose down
+
+# Verify backend containers are stopped
+docker compose ps
+
+# The frontend files are static in nginx, but you can restore the original page:
+sudo cp /var/www/html/index.html.backup /var/www/html/index.html 2>/dev/null || echo "No backup found"
+
+# Reload nginx to serve the restored content
+sudo systemctl reload nginx
+```
+
+**When to stop:** When you're done testing or want to deploy a different chatbot configuration.
+
 ---
 
-## Final Configuration: Navigation Landing Page
+## Optional: Create a Portfolio Landing Page
 
-Let's update your main landing page to provide easy access to all chatbots:
+**Note**: Since each chatbot deployment replaces the main site, this landing page is optional and would only be visible if you restore it after testing the individual chatbots.
+
+If you want to create a portfolio page showcasing your completed deployments, you can create this after completing all the chatbot deployments:
 
 ```bash
 sudo nano /var/www/html/index.html
@@ -969,15 +1048,8 @@ Replace the content with:
             padding: 30px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none;
             color: white;
             display: block;
-        }
-        .chatbot-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
-            color: white;
         }
         .chatbot-number {
             font-size: 2em;
@@ -1061,9 +1133,9 @@ Replace the content with:
         </div>
 
         <div class="chatbots-grid">
-            <a href="/chatbot02" class="chatbot-card">
+            <div class="chatbot-card">
                 <div class="chatbot-number">02</div>
-                <div class="chatbot-title">Environment Variables</div>
+                <div class="chatbot-title">Environment Variables ✅</div>
                 <div>
                     <span class="chatbot-tech">Node.js</span>
                     <span class="chatbot-tech">Express</span>
@@ -1072,11 +1144,11 @@ Replace the content with:
                 <div class="chatbot-description">
                     Foundation chatbot with proper environment variable management and basic Express server setup.
                 </div>
-            </a>
+            </div>
 
-            <a href="/chatbot03" class="chatbot-card">
+            <div class="chatbot-card">
                 <div class="chatbot-number">03</div>
-                <div class="chatbot-title">CORS Configuration</div>
+                <div class="chatbot-title">CORS Configuration ✅</div>
                 <div>
                     <span class="chatbot-tech">Node.js</span>
                     <span class="chatbot-tech">CORS</span>
@@ -1085,11 +1157,11 @@ Replace the content with:
                 <div class="chatbot-description">
                     Enhanced security with Cross-Origin Resource Sharing policies and production-ready configuration.
                 </div>
-            </a>
+            </div>
 
-            <a href="/chatbot04" class="chatbot-card">
+            <div class="chatbot-card">
                 <div class="chatbot-number">04</div>
-                <div class="chatbot-title">Python FastAPI</div>
+                <div class="chatbot-title">Python FastAPI ✅</div>
                 <div>
                     <span class="chatbot-tech">Python</span>
                     <span class="chatbot-tech">FastAPI</span>
@@ -1098,11 +1170,11 @@ Replace the content with:
                 <div class="chatbot-description">
                     Modern Python backend with async capabilities, real-time streaming, and automatic API documentation.
                 </div>
-            </a>
+            </div>
 
-            <a href="/chatbot05" class="chatbot-card">
+            <div class="chatbot-card">
                 <div class="chatbot-number">05</div>
-                <div class="chatbot-title">React TypeScript</div>
+                <div class="chatbot-title">React TypeScript ✅</div>
                 <div>
                     <span class="chatbot-tech">React</span>
                     <span class="chatbot-tech">TypeScript</span>
@@ -1111,7 +1183,7 @@ Replace the content with:
                 <div class="chatbot-description">
                     Full-stack application with React TypeScript frontend, component architecture, and modern tooling.
                 </div>
-            </a>
+            </div>
         </div>
 
         <div class="footer">
@@ -1133,19 +1205,119 @@ Remember to replace `[Your Group Name Here]` with your actual group name!
 
 ## Process Management Commands
 
-Monitor your services:
+### Monitor Your Services
 
 **For Node.js chatbots (02, 03):**
 ```bash
+# Check status of all PM2 processes
 pm2 status
+
+# View logs for all processes
 pm2 logs
+
+# View logs for specific chatbot
+pm2 logs chatbot02
+
+# Restart all PM2 processes
 pm2 restart all
+
+# Restart specific chatbot
+pm2 restart chatbot02
 ```
 
 **For Docker chatbots (04, 05):**
 ```bash
-# Check running containers
+# Check running containers (run from chatbot directory)
 docker compose ps
+
+# View logs
+docker compose logs -f
+
+# Restart services
+docker compose restart
+
+# Check container resource usage
+docker stats
+```
+
+### Stop/Start Individual Services
+
+**Node.js Chatbots (PM2):**
+```bash
+# Stop specific service
+pm2 stop chatbot02
+pm2 stop chatbot03
+
+# Start specific service
+pm2 start chatbot02
+pm2 start chatbot03
+
+# Delete service completely (remove from PM2 list)
+pm2 delete chatbot02
+pm2 delete chatbot03
+
+# Stop all PM2 processes
+pm2 stop all
+
+# Delete all PM2 processes
+pm2 delete all
+```
+
+**Docker Chatbots:**
+```bash
+# Stop services (from chatbot directory)
+cd ~/project-1-xx/chatbot_04_MVPPython
+docker compose down
+
+cd ~/project-1-xx/chatbot_05_MVPPythonTypescriptReact/chatbot_05_MVPPythonTypescriptReact\ -\ Copy
+docker compose down
+
+# Start services
+docker compose up -d
+
+# Stop and remove everything (containers, networks, images)
+docker compose down --rmi all --volumes
+```
+
+### Complete System Cleanup
+
+**Stop all services and free resources:**
+```bash
+# Stop all PM2 processes
+pm2 delete all
+
+# Stop all Docker containers
+docker stop $(docker ps -aq) 2>/dev/null || echo "No containers running"
+
+# Remove all Docker containers
+docker rm $(docker ps -aq) 2>/dev/null || echo "No containers to remove"
+
+# Check what's still running on ports
+sudo netstat -tlnp | grep :300  # Node.js ports
+sudo netstat -tlnp | grep :800  # Docker ports
+```
+
+### Quick Reference: When to Stop Services
+
+**🔄 Moving between chatbots (recommended workflow):**
+1. Stop current service using the 🛑 section in each deployment
+2. Update nginx configuration for next chatbot
+3. Start next service
+
+**🧹 Troubleshooting port conflicts:**
+1. Use `pm2 status` and `docker compose ps` to see what's running
+2. Stop conflicting services with `pm2 stop <name>` or `docker compose down`
+3. Use `ss -tuln | grep :<port>` to verify ports are free
+
+**💾 Saving resources:**
+- Use `pm2 stop` to pause services without removing them
+- Use `docker compose down` to stop and remove containers
+- Use complete cleanup commands when starting fresh
+
+**🚨 Emergency stop everything:**
+```bash
+pm2 delete all && docker stop $(docker ps -aq) 2>/dev/null
+```
 
 # View logs
 docker compose logs -f
@@ -1162,12 +1334,10 @@ docker compose up -d
 
 ## Testing All Deployments
 
-Test each chatbot:
-1. **Landing Page**: `https://project-1-xx.eduhk.hk/`
-2. **Chatbot 02**: `https://project-1-xx.eduhk.hk/chatbot02`
-3. **Chatbot 03**: `https://project-1-xx.eduhk.hk/chatbot03`
-4. **Chatbot 04**: `https://project-1-xx.eduhk.hk/chatbot04`
-5. **Chatbot 05**: `https://project-1-xx.eduhk.hk/chatbot05`
+Test your deployed chatbot:
+- **Current Deployment**: `https://project-1-xx.eduhk.hk`
+
+**Note**: Each chatbot deployment replaces the main site. Only one chatbot can be active at a time. See the "Understanding Nginx Routing" section below for more details.
 
 ## Troubleshooting Progressive Deployment
 
@@ -1270,4 +1440,108 @@ Each deployment builds upon the previous one, demonstrating the evolution from s
 
 ---
 
-**Need Help?** Check the individual README files in each chatbot directory for specific deployment instructions, or contact your instructor for technical support.
+---
+
+## Understanding Nginx Routing: Individual vs Multi-App Deployments
+
+### Current Approach: Individual Deployment (Recommended for Learning)
+
+**What we're doing in this tutorial:**
+- Each chatbot deployment **replaces** the main website at `https://project-1-xx.eduhk.hk`
+- Only **one chatbot is active** at any given time
+- Each deployment uses the nginx `location /` block (root path)
+
+**Benefits for students:**
+✅ **Simple routing** - no path conflicts between nginx and Node.js/Python  
+✅ **Clean URLs** - just `project-1-xx.eduhk.hk` instead of `project-1-xx.eduhk.hk/chatbot02`  
+✅ **Real production experience** - mimics how most apps are actually deployed  
+✅ **No routing confusion** - eliminates conflicts between nginx paths and app routing  
+
+**How it works:**
+```nginx
+# This replaces whatever was at the root path before
+location / {
+    proxy_pass http://127.0.0.1:3001;  # Your chatbot
+    # ... proxy headers
+}
+```
+
+### Alternative Approach: Multi-App Deployment (Advanced)
+
+**What some tutorials do (but we avoid):**
+- Multiple chatbots running simultaneously on different nginx paths
+- `/chatbot02`, `/chatbot03`, `/chatbot04`, etc.
+
+**Why this can be problematic:**
+❌ **Routing conflicts** - Node.js apps expect to be at root `/`, not `/chatbot02`  
+❌ **Complex configuration** - requires modifying app code for sub-paths  
+❌ **Resource usage** - multiple apps running simultaneously  
+❌ **Port management** - more ports to manage and potential conflicts  
+
+**Example of the complex approach we avoid:**
+```nginx
+# Multiple simultaneous apps (more complex)
+location /chatbot02 {
+    proxy_pass http://127.0.0.1:3001;
+    # Apps need to handle sub-path routing internally
+}
+location /chatbot03 {
+    proxy_pass http://127.0.0.1:3002;
+    # More complexity, more things that can break
+}
+```
+
+### Progressive Deployment Workflow
+
+**Our recommended approach:**
+
+1. **Start with custom static page** (Part 1)
+2. **Deploy Chatbot 02** - replaces static page with Node.js app
+3. **Deploy Chatbot 03** - replaces Chatbot 02 with CORS-configured app  
+4. **Deploy Chatbot 04** - replaces Node.js with Python FastAPI
+5. **Deploy Chatbot 05** - replaces backend-only with full React frontend
+
+**Each deployment:**
+- Stops the previous service (PM2 or Docker)
+- Updates the nginx `location /` block
+- Starts the new service
+- Tests at `https://project-1-xx.eduhk.hk`
+
+### Key Learning Points
+
+**Why this approach teaches better practices:**
+
+🎓 **Real-world deployment patterns** - Most production apps deploy to root domains  
+🎓 **Service management** - Learn to properly stop/start services  
+🎓 **Configuration management** - Understand how nginx routing actually works  
+🎓 **Resource optimization** - Only run what you need  
+
+**Production deployment patterns:**
+- **Development**: `dev.company.com` → latest development version
+- **Staging**: `staging.company.com` → test version before production  
+- **Production**: `company.com` → live application
+- **NOT**: `company.com/dev`, `company.com/staging` (anti-pattern)
+
+### Troubleshooting Routing Issues
+
+**Common nginx routing problems:**
+
+1. **404 errors on refresh**: React apps need `try_files $uri /index.html`
+2. **API paths not found**: Ensure API routes are defined before `/` catch-all
+3. **Static assets 404**: Check file permissions and paths
+4. **Proxy errors**: Verify backend is actually running on expected port
+
+**Quick diagnosis:**
+```bash
+# Check what's actually running
+sudo netstat -tlnp | grep :80
+sudo netstat -tlnp | grep :443
+
+# Check nginx is serving the right content
+curl -I https://project-1-xx.eduhk.hk
+
+# Check backend is responding
+curl -I http://127.0.0.1:3001  # or whatever port
+```
+
+---
